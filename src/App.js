@@ -1,37 +1,58 @@
-import { render } from "@testing-library/react";
-import React from "react";
-import { Component } from "react";
-import Input from "./components/imput";
-import ContactList from "./components/contactList";
-class App extends React.Component {
-  state = {
-    contacts: [''],
-    name: '',
-    id:1
-  }
- 
+import React,{ Component } from "react";
+import Form from "./components/form";
+class MyForm extends Component{
+    state = {
+        good: 0,
+        neutral: 0,
+        bad: 0
+      }
 
+      goodIncrement=()=>{
+  this.setState(prevState => {
+    return{
+      good:prevState.good+1,
+    }
+    });
+      }
+      neutralIncrement=()=>{
+        this.setState(prevState=>{
+          return{
+            neutral:prevState.neutral+1,
+          }
 
-  pushName=()=>{
-    this.setState({
-      name:document.getElementById('inputid').value
-    })
-  }
-  pushNumber=()=>{
-    this.setState({})
-  }
+        })
+      }
+      badIncrement=()=>{
+        this.setState(prevState=>{
+          return{
+            bad:prevState.bad+1,
+          }
+        })
+      }
 
-render(){
+      countTotalFeedback=()=>{
+        let total = Object.values(this.state).reduce((acc, el) => acc + el, 0);
+    return total;
+      }
+        
+      
 
-  return(
-    <div>
-< Input onName={this.pushName} onContacts={this.pushNumber} />
-  <ContactList items={this.state.name} /> 
-    </div>
-  )
+      render(){
+        return(
+        <div>
+< Form
+ onGood={this.goodIncrement}
+ onNeutral={this.neutralIncrement}
+ onBad={this.badIncrement}
+ good={this.state.good}
+ neutral={this.state.neutral}
+ bad={this.state.bad}
+ total={this.countTotalFeedback()}
+ />
 
+        </div>
+        );
+      }
 }
-    
 
-}
-export default App;
+export default MyForm;
